@@ -9,7 +9,7 @@ import java.io.OutputStream
 
 /**
  * creator: lt  2022/10/21  lt.dygzs@qq.comS
- * effect : 工具类
+ * effect : Common Tools for KSP
  * warning:
  */
 
