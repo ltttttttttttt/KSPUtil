@@ -14,11 +14,9 @@ class KSTypeInfo(
     val childType: List<KSTypeInfo>,
 ) {
     override fun toString(): String {
-        return "$thisTypeName${
-            childType.joinToString(
-                prefix = "<",
-                postfix = ">"
-            )
-        }${if (nullable) "?" else ""}"
+        val typeString = thisTypeName.toString()
+        val childTypeString = if (childType.isEmpty()) "" else childType.joinToString(prefix = "<", postfix = ">")
+        val nullableString = if (nullable) "?" else ""
+        return typeString + childTypeString + nullableString
     }
 }
