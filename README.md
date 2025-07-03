@@ -12,7 +12,7 @@ Get the full class name of the outermost class of the passed type
 
 # Use 
 
-* 1. Add it in your root settings.gradle at the end of repositories:
+* 1. Add it in your root settings.gradle.kts at the end of repositories:
 
 ```kotlin
 dependencyResolutionManagement {
