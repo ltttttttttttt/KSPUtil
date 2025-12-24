@@ -37,8 +37,8 @@ fun getKSTypeInfo(
     val arguments = ksType.arguments
     val childType: List<KSTypeInfo> = if (arguments.isEmpty()) listOf() else {
         //有泛型
-        arguments.filter { it.type != null }.map {
-            getKSTypeInfo(it.type!!, childClass, thisClass)
+        arguments.mapNotNull { it.type }.map {
+            getKSTypeInfo(it.resolve(), childClass, thisClass)
         }
     }
     //是否可空
@@ -105,7 +105,7 @@ fun getKSTypeArguments(
         ks.element?.typeArguments
     }
     return arguments?.map {
-        getKSTypeInfo(it.type!!, childClass, thisClass)
+        getKSTypeInfo(it.type!!.resolve(), childClass, thisClass)
     } ?: listOf()
 }
 
