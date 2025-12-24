@@ -24,18 +24,16 @@ fun OutputStream.appendText(str: String) {
 
 /**
  * 获取ksType的完整泛型信息
- * [ks] KSTypeReference信息
+ * [ksType] KSType信息
  *
  * Get complete generic information for ksType
- * [ks] KSTypeReference Information
+ * [ksType] KSType Information
  */
 fun getKSTypeInfo(
-    ks: KSTypeReference,
+    ksType: KSType,
     childClass: KSClassDeclaration?,
     thisClass: KSClassDeclaration,
 ): KSTypeInfo {
-    //type对象
-    val ksType = ks.resolve()
     val arguments = ksType.arguments
     val childType: List<KSTypeInfo> = if (arguments.isEmpty()) listOf() else {
         //有泛型
@@ -118,9 +116,7 @@ fun getKSTypeArguments(
  * Get the full class name of the outermost class of the passed type
  * For example, Call<String>, obtain the full class name of Call
  */
-fun getKSTypeOutermostName(ks: KSTypeReference): TypeName {
-    //type对象
-    val ksType = ks.resolve()
+fun getKSTypeOutermostName(ksType: KSType): TypeName {
     //如果是typealias类型
     return if (ksType.declaration is KSTypeAlias) {
         (ksType.declaration as KSTypeAlias).findActualType()
@@ -189,4 +185,25 @@ fun getTypeChild(type: String): String {
     if (!type.contains("<"))
         return type
     return type.substring(type.indexOf("<") + 1, type.lastIndexOf(">"))
+}
+
+/**
+ * 判断KSType是否是List或其子类
+ */
+internal fun KSType.isList(): Boolean {
+    val declaration = declaration
+    val packageName = declaration.packageName.asString()
+    val className = declaration.simpleName.asString()
+    return if (packageName == "kotlin.collections" && className == "List")
+        true
+    else if (packageName == "kotlin" && className == "Any")
+        false
+    else {
+        if (declaration is KSClassDeclaration) {
+            declaration.superTypes.any {
+                it.resolve().isList()
+            }
+        } else
+            false
+    }
 }
