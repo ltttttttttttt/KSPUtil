@@ -190,7 +190,7 @@ fun getTypeChild(type: String): String {
 /**
  * 判断KSType是否是List或其子类
  */
-internal fun KSType.isList(): Boolean {
+fun KSType.isList(): Boolean {
     val declaration = declaration
     val packageName = declaration.packageName.asString()
     val className = declaration.simpleName.asString()
